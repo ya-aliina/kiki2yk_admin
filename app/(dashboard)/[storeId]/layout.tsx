@@ -29,7 +29,7 @@ const DashboardLayout = async ({ children, params }: DashboardLayoutProps) => {
     );
 
     // создаем пустую переменную для дальнейшего хранения данных о магащине
-    let store = null as any;
+    let store;
 
     // Проходимся по данным и записываем в переменную
     storeSnap.forEach((doc) => {
@@ -42,6 +42,7 @@ const DashboardLayout = async ({ children, params }: DashboardLayoutProps) => {
     }
 
     return (
+
         <div>
             This is the Navbar: {params.storeId}
             {children}
