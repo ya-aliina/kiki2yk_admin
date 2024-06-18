@@ -5,6 +5,7 @@ import {
 } from '@firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Store } from '@/types.db';
+import Navbar from '@/components/navbar';
 
 interface DashboardLayoutProps {
     children: React.ReactNode,
@@ -42,9 +43,8 @@ const DashboardLayout = async ({ children, params }: DashboardLayoutProps) => {
     }
 
     return (
-
         <div>
-            This is the Navbar: {params.storeId}
+            <Navbar />
             {children}
         </div>
     );
