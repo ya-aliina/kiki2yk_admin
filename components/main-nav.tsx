@@ -22,24 +22,22 @@ const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => 
 
     ];
     return (
-        <ul className={cn('flex items-center space-x-4 lg:space-x-6 pl-6')}>
+        <div className={cn('flex items-center space-x-4 lg:space-x-6 pl-6')}>
             {routes.map((route) => (
-                <li>
-                    <Link
-                        key={route.href}
-                        href={route.href}
-                        className={cn(
-                            'text-sm font-medium transition-colors hover: text-primary',
-                            pathName === route.href
-                                ? 'text-black dark:text-white'
-                                : 'text-muted-foreground',
-                        )}
-                    >
-                        {route.name}
-                    </Link>
-                </li>
+                <Link
+                    key={route.href}
+                    href={route.href}
+                    className={cn(
+                        'text-sm font-medium transition-colors hover: text-primary',
+                        pathName === route.href
+                            ? 'text-black dark:text-white'
+                            : 'text-muted-foreground',
+                    )}
+                >
+                    {route.name}
+                </Link>
             ))}
-        </ul>
+        </div>
     );
 };
 

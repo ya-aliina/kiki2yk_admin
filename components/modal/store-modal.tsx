@@ -37,7 +37,7 @@ export const StoreModal = () => {
         },
     });
 
-    const onSumbmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             setIsLoading(true);
             const response = await axios.post('/api/stores', values);
@@ -60,7 +60,7 @@ export const StoreModal = () => {
         >
             <div className="space-y-4 py-2 pb-4">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSumbmit)}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
                             name="name"

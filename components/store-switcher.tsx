@@ -1,24 +1,88 @@
 'use client';
 
-import { PopoverTrigger } from '@/components/ui/popover';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
+import {Check, ChevronsUpDown} from 'lucide-react';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import { Store } from '@/types.db';
-import {useParams, usePathname} from "next/navigation";
+import { Button } from '@/components/ui/button';
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
+import {cn} from "@/lib/utils";
 
-type PopoverTrigger = Rect.ComponentPropsWithoutRef<typeof PopoverTrigger>
-interface StoreSwitcherProps extends PopoverTrigger {
-    items: Store[]
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<
+    typeof PopoverTrigger
+>;
+
+interface StoreSwitcherProps extends PopoverTriggerProps {
+    items: Store[];
+}
+
+interface StoreDataForSwitcher {
+    label: string,
+    value: string,
 }
 
 const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
-    const pathName = usePathname();
+    const [open, setOpen] = useState(false);
     const params = useParams();
+    const router = useRouter();
 
-    const formattedStoresInfo = items.map((item) => {
+    const formattedStores: StoreDataForSwitcher[] = items.map((item) => ({
+        label: item.name,
+        value: item.id,
+    }));
 
-    })
+    const currentStore = formattedStores.find(
+        (item) => item.value === params.storeId,
+    );
+
+    const onStoreSelect = (store: StoreDataForSwitcher) => {
+        setOpen(false);
+        router.push(`/${store.value}`);
+    };
 
     return (
-        <div />
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-[200px] justify-between"
+                >
+                    {currentStore?.value
+                        ? formattedStores.find((framework) => framework.value === currentStore?.value)?.label
+                        : 'Select framework...'}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+                <Command>
+                    <CommandInput placeholder="Search framework..." />
+                    <CommandEmpty>No framework found.</CommandEmpty>
+                    <CommandGroup>
+                        {formattedStores.map((store) => (
+                            <CommandItem
+                                key={store.value}
+                                value={store.value}
+                                onSelect={(currentValue) => {
+                                    // setValue(currentValue === value ? '' : currentValue);
+                                    setOpen(false);
+                                }}
+                            >
+                                <Check
+                                    className={cn(
+                                        'mr-2 h-4 w-4',
+                                        currentStore?.value === store.value ? 'opacity-100' : 'opacity-0',
+                                    )}
+                                />
+                                {store.label}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+                </Command>
+            </PopoverContent>
+        </Popover>
     );
 };
 

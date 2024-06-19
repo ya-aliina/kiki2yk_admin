@@ -12,6 +12,7 @@ interface SetupLayoutProps {
 
 const SetupLayout = async ({ children }: SetupLayoutProps) => {
     const { userId } = auth();
+
     if (!userId) {
         redirect('/sign-in');
     }
