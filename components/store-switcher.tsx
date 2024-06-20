@@ -2,12 +2,14 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {Check, ChevronsUpDown} from 'lucide-react';
-import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
+import {Check, ChevronsUpDown, StoreIcon} from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Store } from '@/types.db';
 import { Button } from '@/components/ui/button';
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
-import {cn} from "@/lib/utils";
+import {
+    Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
+} from '@/components/ui/command';
+import { cn } from '@/lib/utils';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
     typeof PopoverTrigger
@@ -50,36 +52,43 @@ const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                 >
+                    <StoreIcon className="mr-2 h-4 w-4" />
                     {currentStore?.value
-                        ? formattedStores.find((framework) => framework.value === currentStore?.value)?.label
-                        : 'Select framework...'}
+                        ? formattedStores?.find(
+                            (store) => store.value === currentStore?.value,
+                        )?.label
+                        : 'Select store...'}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search framework..." />
-                    <CommandEmpty>No framework found.</CommandEmpty>
-                    <CommandGroup>
-                        {formattedStores.map((store) => (
-                            <CommandItem
-                                key={store.value}
-                                value={store.value}
-                                onSelect={(currentValue) => {
-                                    // setValue(currentValue === value ? '' : currentValue);
-                                    setOpen(false);
-                                }}
-                            >
-                                <Check
-                                    className={cn(
-                                        'mr-2 h-4 w-4',
-                                        currentStore?.value === store.value ? 'opacity-100' : 'opacity-0',
-                                    )}
-                                />
-                                {store.label}
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
+                    <CommandInput placeholder="Search store..." />
+                    <CommandEmpty>No store found.</CommandEmpty>
+                    <CommandList>
+                        <CommandGroup>
+                            {formattedStores?.map((store) => (
+                                <CommandItem
+                                    key={store.value}
+                                    value={store.value}
+                                    onSelect={(currentValue) => {
+                                        // setValue(currentValue === value ? '' : currentValue);
+                                        setOpen(false);
+                                    }}
+                                >
+                                    <Check
+                                        className={cn(
+                                            'mr-2 h-4 w-4',
+                                            currentStore?.value === store.value
+                                                ? 'opacity-100'
+                                                : 'opacity-0',
+                                        )}
+                                    />
+                                    {store.label}
+                                </CommandItem>
+                            ))}
+                        </CommandGroup>
+                    </CommandList>
                 </Command>
             </PopoverContent>
         </Popover>

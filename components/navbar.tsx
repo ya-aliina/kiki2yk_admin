@@ -1,13 +1,16 @@
-import { UserButton } from '@clerk/nextjs';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import {
-    collection, getDocs, query, where,
+    collection,
+    getDocs,
+    query,
+    where,
 } from '@firebase/firestore';
-import MainNav from '@/components/main-nav';
-import StoreSwitcher from '@/components/store-switcher';
+import { UserButton } from '@clerk/nextjs';
 import { db } from '@/lib/firebase';
 import { Store } from '@/types.db';
+import MainNav from '@/components/main-nav';
+import StoreSwitcher from '@/components/store-switcher';
 
 const Navbar = async () => {
     const { userId } = auth();
@@ -23,20 +26,11 @@ const Navbar = async () => {
         ),
     );
 
-    // const stores = [] as Store[];
-    const stores = [
-        {
-            name: 'test-31',
-            id: 'sot0nAExLF8yFok6kCqt',
-        },
-        {
-            name: 'test',
-            id: 'tnAxZjzEpLc4wen8cUFM',
-        },
-    ];
-    // storeSnap.forEach((store) => (
-    //     stores.push(store)
-    // ));
+    const stores: Store[] = [];
+
+    storeSnap.forEach((store) => (
+        stores.push(store.data() as Store)
+    ));
 
     return (
         <nav className="border-b">
