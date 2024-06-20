@@ -2,14 +2,19 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import {Check, ChevronsUpDown, StoreIcon} from 'lucide-react';
+import { ChevronsUpDown, Search, StoreIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Store } from '@/types.db';
 import { Button } from '@/components/ui/button';
 import {
-    Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandList, CommandSeparator,
 } from '@/components/ui/command';
-import { cn } from '@/lib/utils';
+import StoreListItem from '@/components/store-list-item';
+import { useStoreModal } from '@/hooks/use-store-modal';
+import CreateStoreItem from '@/components/create-store-item';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
     typeof PopoverTrigger
@@ -26,6 +31,11 @@ interface StoreDataForSwitcher {
 
 const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
     const [open, setOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filtered, setFiltered] = useState([] as StoreDataForSwitcher[]);
+
+    const storeModal = useStoreModal();
+
     const params = useParams();
     const router = useRouter();
 
@@ -41,6 +51,17 @@ const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
     const onStoreSelect = (store: StoreDataForSwitcher) => {
         setOpen(false);
         router.push(`/${store.value}`);
+    };
+
+    const handleSearchTerm = (e: any) => {
+        setSearchTerm(e.target.value);
+        setFiltered(
+            formattedStores.filter(
+                (store) => store.label.toLowerCase().includes(
+                    searchTerm.toLowerCase(),
+                ),
+            ),
+        );
     };
 
     return (
@@ -63,31 +84,53 @@ const StoreSwitcher = ({ items }: StoreSwitcherProps) => {
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search store..." />
-                    <CommandEmpty>No store found.</CommandEmpty>
                     <CommandList>
-                        <CommandGroup>
-                            {formattedStores?.map((store) => (
-                                <CommandItem
-                                    key={store.value}
-                                    value={store.value}
-                                    onSelect={(currentValue) => {
-                                        // setValue(currentValue === value ? '' : currentValue);
-                                        setOpen(false);
-                                    }}
-                                >
-                                    <Check
-                                        className={cn(
-                                            'mr-2 h-4 w-4',
-                                            currentStore?.value === store.value
-                                                ? 'opacity-100'
-                                                : 'opacity-0',
-                                        )}
-                                    />
-                                    {store.label}
-                                </CommandItem>
-                            ))}
+                        <div className="w-full px-2 py-1 flex items-center border rounded-md border-gray-100">
+                            <Search className="mr-2 h-4 w-4 min-w-4" />
+                            <input
+                                type="text"
+                                placeholder="Search Store..."
+                                onChange={handleSearchTerm}
+                                className="flex-1 w-full outline-none"
+                            />
+                        </div>
+                        <CommandGroup heading="stores">
+                            {
+                                searchTerm === ''
+                                    ? (
+                                        formattedStores.map((store) => (
+                                            <StoreListItem
+                                                store={store}
+                                                key={store.value}
+                                                onSelect={onStoreSelect}
+                                                isChecked={currentStore?.value === store.value}
+                                            />
+                                        ))
+                                    )
+                                    : filtered.length > 0
+                                        ? (
+                                            filtered.map((store) => (
+                                                <StoreListItem
+                                                    store={store}
+                                                    key={store.value}
+                                                    onSelect={onStoreSelect}
+                                                    isChecked={currentStore?.value === store.value}
+                                                />
+                                            ))
+                                        ) : <CommandEmpty>No Store Found</CommandEmpty>
+                            }
                         </CommandGroup>
+                    </CommandList>
+
+                    <CommandSeparator />
+
+                    <CommandList>
+                        <CreateStoreItem
+                            onClick={() => {
+                                setOpen(false);
+                                storeModal.onOpen();
+                            }}
+                        />
                     </CommandList>
                 </Command>
             </PopoverContent>

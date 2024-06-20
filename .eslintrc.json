@@ -16,6 +16,7 @@
     "react/function-component-definition": "off",
     "arrow-body-style": "off",
     "react/jsx-props-no-spreading": "off",
-    "max-len": ["error", 120]
+    "max-len": ["error", 125],
+    "no-nested-ternary": "off"
   }
 }
