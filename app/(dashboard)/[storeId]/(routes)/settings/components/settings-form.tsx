@@ -1,19 +1,22 @@
 'use client';
 
 import { Trash } from 'lucide-react';
-import { Store } from '@/types.db';
-import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import {
+    Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
-import {useParams, useRouter} from "next/navigation";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { Button } from '@/components/ui/button';
+import Heading from '@/components/heading';
+import { Store } from '@/types.db';
+import AlertModal from '@/components/modal/alert-modal';
 
 interface SettingsFormProps{
     initialData: Store
@@ -26,25 +29,40 @@ const formSchema = z.object({
 });
 
 const SettingsForm = ({ initialData }: SettingsFormProps) => {
-
-    console.log(initialData)
+    const [isLoading, setIsLoading] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData
+        defaultValues: initialData,
     });
 
-    const [isLoading, setIsLoading] = useState(false);
-    const params = useParams()
-    const router = useRouter()
+    const params = useParams();
+    const router = useRouter();
 
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
         try {
             setIsLoading(true);
-            const response = await axios.patch(`/api/stores${params.storeId}`, data);
-            const storeId = response.data.id;
+
+            const response = await axios.patch(`/api/stores/${params.storeId}`, data);
             toast.success('Store Updated');
-            window.location.assign(`/${storeId}`);
+            router.refresh();
+        } catch (err) {
+            toast.error('Something went wrong');
+        } finally {
+            setIsLoading(false);
+            setOpen(false);
+        }
+    };
+
+    const onDelete = async () => {
+        try {
+            setIsLoading(true);
+
+            const response = await axios.delete(`/api/stores/${params.storeId}`);
+            toast.success('Store Removed');
+            router.refresh();
+            router.push('/');
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -54,9 +72,16 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
 
     return (
         <>
+            <AlertModal
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                onConfirm={onDelete}
+                loading={isLoading}
+            />
+
             <div className="flex items-center justify-center">
                 <Heading title="Settings" description="Manage Store Preferences" />
-                <Button variant="destructive" size="icon" onClick={() => {}}>
+                <Button variant="destructive" size="icon" onClick={() => {setOpen(true)}}>
                     <Trash className="h-4 w-4" />
                 </Button>
 

@@ -6,7 +6,6 @@ import {
 import { addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-// eslint-disable-next-line consistent-return
 export const POST = async (req: Request) => {
     try {
         const { userId } = auth();
