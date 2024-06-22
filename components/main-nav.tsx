@@ -16,10 +16,17 @@ const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => 
 
     const routes:routesItem[] = [
         {
+            href: `/${params.storeId}`,
+            name: 'overview',
+        },
+        {
             href: `/${params.storeId}/settings`,
             name: 'settings',
         },
-
+        {
+            href: `/${params.storeId}/billboards`,
+            name: 'billboards',
+        },
     ];
     return (
         <div className={cn('flex items-center space-x-4 lg:space-x-6 pl-6')}>
