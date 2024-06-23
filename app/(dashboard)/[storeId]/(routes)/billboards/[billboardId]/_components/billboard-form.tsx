@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
 import { Billboards } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
+import ImageUpload from '@/components/image-upload';
 
 interface BillboardFormProps{
     initialData: Billboards
@@ -47,9 +48,14 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
         try {
             setIsLoading(true);
 
-            const response = await axios.patch(`/api/stores/${params.storeId}`, data);
-            toast.success('Store Updated');
+            if(initialData) {
+
+            } else {
+                await axios.post(`/${params.storeId}/billboards`, data);
+            }
+            toast.success(toastMessage);
             router.refresh();
+            router.push(`/${params.storeId}/billboards`);
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -61,8 +67,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-
-            const response = await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/stores/${params.storeId}`);
             toast.success('Store Removed');
             router.refresh();
             router.push('/');
@@ -74,7 +79,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     };
 
     return (
-        <>
+        <div className="flex-1 space-y-4 p-8 pt-6">
             <AlertModal
                 isOpen={open}
                 onClose={() => setOpen(false)}
@@ -84,17 +89,16 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
 
             <div className="flex items-center justify-center">
                 <Heading title={title} description="" />
-                { initialData
-                    && (
-                        <Button
-                            disabled={isLoading}
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => { setOpen(true); }}
-                        >
-                            <Trash className="h-4 w-4" />
-                        </Button>
-                    )}
+                {initialData && (
+                    <Button
+                        disabled={isLoading}
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => { setOpen(true); }}
+                    >
+                        <Trash className="h-4 w-4" />
+                    </Button>
+                )}
             </div>
             <Separator />
 
@@ -103,21 +107,27 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="w-full space-y-8"
                 >
+
+                    <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Billboard image</FormLabel>
+                                <FormControl>
+                                    <ImageUpload
+                                        value={field.value ? [field.value] : []}
+                                        disabled={isLoading}
+                                        onChange={(url) => field.onChange(url)}
+                                        onRemove={() => field.onChange('')}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
                     <div className="grid grid-cols-3 gap-3">
-                        <FormField
-                            control={form.control}
-                            name="imageUrl"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormLabel>Billboard Image<FormLabel/>
-                                    <FormControl>
-                                        <ImageUpload />
-                                    </FormControl>
-                                <FormItem/>
-                            )}
-                        />
-
-
                         <FormField
                             control={form.control}
                             name="label"
@@ -142,8 +152,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
                     </Button>
                 </form>
             </Form>
-
-        </>
+        </div>
     );
 };
 

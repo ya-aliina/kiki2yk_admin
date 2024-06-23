@@ -43,8 +43,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
         try {
             setIsLoading(true);
-
-            const response = await axios.patch(`/api/stores/${params.storeId}`, data);
+            await axios.patch(`/api/stores/${params.storeId}`, data);
             toast.success('Store Updated');
             router.refresh();
         } catch (err) {
@@ -58,8 +57,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-
-            const response = await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/stores/${params.storeId}`);
             toast.success('Store Removed');
             router.refresh();
             router.push('/');
@@ -68,10 +66,10 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
-        <>
+        <div className="flex-1 space-y-5 p-8 pt-6">
             <AlertModal
                 isOpen={open}
                 onClose={() => setOpen(false)}
@@ -118,8 +116,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
                     </Button>
                 </form>
             </Form>
-
-        </>
+        </div>
     );
 };
 

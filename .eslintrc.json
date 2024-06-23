@@ -17,6 +17,12 @@
     "arrow-body-style": "off",
     "react/jsx-props-no-spreading": "off",
     "max-len": ["error", 125],
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      { "required": {
+          "some": ["nesting", "id"]
+      }}
+    ]
   }
 }

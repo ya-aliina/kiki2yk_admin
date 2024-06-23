@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
 interface HeadingProps {
     title: string,
     description: string,
 }
 
-const Heading = ({title, description}: HeadingProps) => {
+const Heading = ({ title, description }: HeadingProps) => {
     return (
-        <div className='w-full'>
+        <div className="w-full">
             <h2 className="text-3xl font-bold tracking-tight">
                 {title}
             </h2>
