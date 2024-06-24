@@ -1,61 +1,61 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import {
-    collection, deleteDoc, doc, getDoc, serverTimestamp, updateDoc,
+    deleteDoc,
+    getDoc,
+    updateDoc,
 } from '@firebase/firestore';
-import { addDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { Store } from '@/types.db';
+import { checkAuth } from '@/lib/apiUtils/auth';
+import { ERRORS } from '@/lib/errors';
+import {paths} from "@/lib/firebasePaths";
 
-export const PATCH = async (req: Request, { params }:{params: {storeId: string}}) => {
+interface StoreParams {
+    params: {
+        storeId: string
+    }
+}
+
+export const PATCH = async (req: Request, { params }:StoreParams) => {
     try {
-        const { userId } = auth();
-        const body = await req.json();
-
-        if (!userId) {
-            return new NextResponse('Un-Authorized', { status: 400 });
-        }
+        const userId = checkAuth();
 
         if (!params.storeId) {
-            return new NextResponse('Store Id is Required', { status: 400 });
+            return new NextResponse(ERRORS.MISSING_STORE_ID, { status: 400 });
         }
+
+        const body = await req.json();
 
         const { name } = body;
-
         if (!name) {
-            return new NextResponse('Store Name is missing', { status: 400 });
+            return new NextResponse(ERRORS.MISSING_STORE_NAME, { status: 400 });
         }
 
-        const docRef = doc(db, 'stores', params.storeId);
-        await updateDoc(docRef, { name });
-        const store = (await getDoc(docRef)).data() as Store;
+        const storeRef = paths.store(params.storeId);
+        await updateDoc(storeRef, { name });
+
+        const store = (await getDoc(storeRef)).data() as Store;
 
         return NextResponse.json(store);
     } catch (error) {
-        console.log(`STORES_PATCH: ${error}`);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        console.log(`STORE_PATCH: ${error}`);
+        return new NextResponse(ERRORS.INTERNAL_SERVER_ERROR, { status: 500 });
     }
 };
 
-export const DELETE = async (req: Request, { params }:{params: {storeId: string}}) => {
+export const DELETE = async (req: Request, { params }:StoreParams) => {
     try {
-        const { userId } = auth();
-
-        if (!userId) {
-            return new NextResponse('Un-Authorized', { status: 400 });
-        }
+        const userId = checkAuth();
 
         if (!params.storeId) {
-            return new NextResponse('Store Id is Required', { status: 400 });
+            return new NextResponse(ERRORS.MISSING_STORE_ID, { status: 400 });
         }
 
-        const docRef = doc(db, 'stores', params.storeId);
+        const storeRef = paths.store(params.storeId);
+        await deleteDoc(storeRef);
 
-        await deleteDoc(docRef)
-
-        return NextResponse.json({msg: "Store deleted"});
+        return NextResponse.json({ msg: 'Store deleted' });
     } catch (error) {
-        console.log(`STORES_POST: ${error}`);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        console.log(`STORE_DELETE: ${error}`);
+        return new NextResponse(ERRORS.INTERNAL_SERVER_ERROR, { status: 500 });
     }
 };

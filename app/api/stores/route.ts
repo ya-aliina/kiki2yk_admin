@@ -1,24 +1,22 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import {
-    collection, doc, serverTimestamp, updateDoc,
+    serverTimestamp,
+    updateDoc,
 } from '@firebase/firestore';
 import { addDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { checkAuth } from '@/lib/apiUtils/auth';
+import { ERRORS } from '@/lib/errors';
+import { paths } from '@/lib/firebasePaths';
 
 export const POST = async (req: Request) => {
     try {
-        const { userId } = auth();
+        const userId = checkAuth();
+
         const body = await req.json();
 
-        if (!userId) {
-            return new NextResponse('Un-Authorized', { status: 400 });
-        }
-
         const { name } = body;
-
         if (!name) {
-            return new NextResponse('Store Name is missing', { status: 400 });
+            return new NextResponse(ERRORS.MISSING_STORE_NAME, { status: 400 });
         }
 
         const storeData = {
@@ -27,12 +25,10 @@ export const POST = async (req: Request) => {
             createdAt: serverTimestamp(),
         };
 
-        // Add the data to the Firestore and retrive its reference id
-        const storeRef = await addDoc(collection(db, 'stores'), storeData);
-        // Get the reference id
+        const storeRef = await addDoc(paths.storesCollection(), storeData);
         const { id } = storeRef;
 
-        await updateDoc(doc(db, 'stores', id), {
+        await updateDoc(paths.store(id), {
             ...storeData,
             id,
             updatedAt: serverTimestamp(),
@@ -41,6 +37,6 @@ export const POST = async (req: Request) => {
         return NextResponse.json({ id, ...storeData });
     } catch (error) {
         console.log(`STORES_POST: ${error}`);
-        return new NextResponse('Internal Server Error', { status: 500 });
+        return new NextResponse(ERRORS.INTERNAL_SERVER_ERROR, { status: 500 });
     }
 };

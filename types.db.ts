@@ -10,7 +10,7 @@ export interface Store {
     updatedAt: Timestamp,
 }
 
-export interface Billboards {
+export interface Billboard {
     id: string,
     label: string,
     imageUrl: string,

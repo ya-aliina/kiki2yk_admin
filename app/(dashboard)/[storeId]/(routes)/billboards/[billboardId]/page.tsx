@@ -1,6 +1,6 @@
 import { doc, getDoc } from '@firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Billboards } from '@/types.db';
+import { Billboard } from '@/types.db';
 import BillboardForm from '@/app/(dashboard)/[storeId]/(routes)/billboards/[billboardId]/_components/billboard-form';
 
 interface BillboardPageParams {
@@ -13,7 +13,7 @@ interface BillboardPageParams {
 const BillboardPage = async ({ params }: BillboardPageParams) => {
     const billboard = (await getDoc(
         doc(db, 'stores', params.storeId, 'billboards', params.billboardId),
-    )).data() as Billboards;
+    )).data() as Billboard;
 
     return (
         <div className="flex-col">

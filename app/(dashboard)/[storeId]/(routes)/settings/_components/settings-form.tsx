@@ -43,7 +43,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
         try {
             setIsLoading(true);
-            await axios.patch(`/api/stores/${params.storeId}`, data);
+            await axios.patch(`/api/${params.storeId}`, data);
             toast.success('Store Updated');
             router.refresh();
         } catch (err) {
@@ -57,7 +57,7 @@ const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/${params.storeId}`);
             toast.success('Store Removed');
             router.refresh();
             router.push('/');

@@ -9,18 +9,25 @@ import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import {
-    Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
-import { Billboards } from '@/types.db';
+import { Billboard } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
 import ImageUpload from '@/components/image-upload';
+import {deleteObject, ref} from "@firebase/storage";
+import {storage} from "@/lib/firebase";
 
 interface BillboardFormProps{
-    initialData: Billboards
+    initialData: Billboard
 }
 
 const formSchema = z.object({
@@ -44,18 +51,23 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const toastMessage = initialData ? 'Billboard Updated' : 'Billboard Created';
     const action = initialData ? 'Save Changes' : 'Create Billboard';
 
+    const href = {
+        billboard: `/${params.storeId}/billboards/${params.billboardId}`,
+        billboardsList: `/${params.storeId}/billboards`,
+    };
+
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
         try {
             setIsLoading(true);
 
-            if(initialData) {
-
+            if (initialData) {
+                await axios.patch('/api' + href.billboard, data);
             } else {
-                await axios.post(`/${params.storeId}/billboards`, data);
+                await axios.post('/api' + href.billboardsList, data);
             }
             toast.success(toastMessage);
             router.refresh();
-            router.push(`/${params.storeId}/billboards`);
+            router.push(href.billboardsList);
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -67,10 +79,14 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
-            toast.success('Store Removed');
+            const { imageUrl } = form.getValues();
+            await deleteObject(ref(storage, imageUrl)).then(async () => {
+                await axios.delete('/api' + href.billboard);
+            })
+
+            toast.success('Billboard Removed');
             router.refresh();
-            router.push('/');
+            router.push(href.billboardsList);
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -148,7 +164,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
                     </div>
 
                     <Button disabled={isLoading} type="submit" size="sm">
-                        Save Changes
+                        { action }
                     </Button>
                 </form>
             </Form>
