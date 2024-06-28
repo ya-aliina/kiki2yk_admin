@@ -22,6 +22,14 @@ Kiki Admin ist ein Administrations-Panel, entwickelt mit Next.js und TypeScript.
 - **ESLint**: Tool zur Codeanalyse und Fehlererkennung.
 - **TailwindCSS**: Utility-First-CSS-Framework für das Styling.
 
+### Funktionen
+
+- Implementierung der Authentifizierung mit Clerk für Benutzerzugriffe.
+- Verwaltung mehrerer Shops mit Berechtigungsprüfung für Shop-Management.
+- Möglichkeit zur Bearbeitung von Shop-Informationen und Verwaltung von Bildern und Beschreibungen im Dashboard.
+- Darstellung von Daten aus der Datenbank in tabellarischer Form mit Sortierfunktion.
+- In naher Zukunft geplante Funktionen: Verwaltung von Kollektionen und Produkten, sowie Tracking von Kaufstatistiken und Aktualisierung des Bestellstatus.
+
 ## Skripte
 
 - **dev**: Start im Entwicklungsmodus mit `next dev`.
