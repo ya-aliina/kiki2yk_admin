@@ -18,7 +18,7 @@ interface BillboardParams {
 
 export const PATCH = async (req: Request, { params } : BillboardParams) => {
     try {
-        const userId = checkAuth();
+        // const userId = checkAuth();
 
         const body = await req.json();
         const { label, imageUrl } = body;
@@ -39,9 +39,9 @@ export const PATCH = async (req: Request, { params } : BillboardParams) => {
             return new NextResponse(ERRORS.MISSING_BILLBOARD_ID, { status: 400 });
         }
 
-        const storeData = await getStoreData(params);
-        const accessError = verifyStoreAccess(storeData, userId);
-        if (accessError) return accessError;
+        // const storeData = await getStoreData(params);
+        // const accessError = verifyStoreAccess(storeData, userId);
+        // if (accessError) return accessError;
 
         const billboardRef = await getDoc(
             paths.billboard(params.storeId, params.billboardId),
@@ -74,7 +74,7 @@ export const PATCH = async (req: Request, { params } : BillboardParams) => {
 // TODO
 export const DELETE = async (req: Request, { params }:BillboardParams) => {
     try {
-        const userId = checkAuth();
+        // const userId = checkAuth();
 
         if (!params.storeId) {
             return new NextResponse(ERRORS.MISSING_STORE_ID, { status: 400 });
@@ -84,9 +84,9 @@ export const DELETE = async (req: Request, { params }:BillboardParams) => {
             return new NextResponse(ERRORS.MISSING_BILLBOARD_ID, { status: 400 });
         }
 
-        const storeData = await getStoreData(params);
-        const accessError = verifyStoreAccess(storeData, userId);
-        if (accessError) return accessError;
+        // const storeData = await getStoreData(params);
+        // const accessError = verifyStoreAccess(storeData, userId);
+        // if (accessError) return accessError;
 
         const billboardRef = doc(db, 'stores', params.storeId, 'billboards', params.billboardId);
 

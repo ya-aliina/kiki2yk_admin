@@ -8,11 +8,11 @@ import { Separator } from '@/components/ui/separator';
 import { DataTable } from '@/components/ui/data-table';
 import { BillboardColumns, columns } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns';
 
-interface BillboardClientProps {
+interface CategoryClientProps {
     data: BillboardColumns[],
 }
 
-const BillboardClient = ({ data }: BillboardClientProps) => {
+const CategoryClient = ({ data }: CategoryClientProps) => {
     const params = useParams();
     const router = useRouter();
 
@@ -20,8 +20,8 @@ const BillboardClient = ({ data }: BillboardClientProps) => {
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Billboards (${data.length})`}
-                    description="Manage Billboards for your store"
+                    title={`Categories (${data.length})`}
+                    description="Manage Categories for your store"
                 />
 
                 <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
@@ -35,4 +35,4 @@ const BillboardClient = ({ data }: BillboardClientProps) => {
     );
 };
 
-export default BillboardClient;
+export default CategoryClient;

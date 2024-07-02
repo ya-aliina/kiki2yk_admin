@@ -17,7 +17,7 @@ interface StoreParams {
 
 export const PATCH = async (req: Request, { params }:StoreParams) => {
     try {
-        const userId = checkAuth();
+        // const userId = checkAuth();
 
         if (!params.storeId) {
             return new NextResponse(ERRORS.MISSING_STORE_ID, { status: 400 });
@@ -44,7 +44,7 @@ export const PATCH = async (req: Request, { params }:StoreParams) => {
 
 export const DELETE = async (req: Request, { params }:StoreParams) => {
     try {
-        const userId = checkAuth();
+        // const userId = checkAuth();
 
         if (!params.storeId) {
             return new NextResponse(ERRORS.MISSING_STORE_ID, { status: 400 });

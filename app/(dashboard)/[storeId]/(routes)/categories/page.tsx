@@ -1,9 +1,10 @@
 import { getDocs } from '@firebase/firestore';
 import { format } from 'date-fns';
-import BillboardClient from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/client';
+
 import { paths } from '@/lib/firebasePaths';
 import { Billboard } from '@/types.db';
 import { BillboardColumns } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns';
+import CategoryClient from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/client';
 
 interface BillboardProps {
     params: {
@@ -11,7 +12,7 @@ interface BillboardProps {
     }
 }
 
-const Billboards = async ({ params }: BillboardProps) => {
+const CategoriesPage = async ({ params }: BillboardProps) => {
     const billboardsData = (
         await getDocs(paths.billboardsCollection(params.storeId))
     ).docs.map((doc) => doc.data()) as Billboard[];
@@ -25,9 +26,9 @@ const Billboards = async ({ params }: BillboardProps) => {
 
     return (
         <div className="flex-col">
-            <BillboardClient data={formattedBilboards} />
+            <CategoryClient data={formattedBilboards} />
         </div>
     );
 };
 
-export default Billboards;
+export default CategoriesPage;

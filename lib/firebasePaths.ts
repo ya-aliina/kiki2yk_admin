@@ -7,4 +7,3 @@ export const paths = {
     billboardsCollection: (storeId: string) => collection(db, 'stores', storeId, 'billboards'),
     billboard: (storeId: string, billboardId: string) => doc(db, 'stores', storeId, 'billboards', billboardId),
 };
-

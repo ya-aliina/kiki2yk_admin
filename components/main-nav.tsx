@@ -17,15 +17,19 @@ const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => 
     const routes:routesItem[] = [
         {
             href: `/${params.storeId}`,
-            name: 'overview',
+            name: 'Overview',
         },
         {
             href: `/${params.storeId}/settings`,
-            name: 'settings',
+            name: 'Settings',
         },
         {
             href: `/${params.storeId}/billboards`,
-            name: 'billboards',
+            name: 'Billboards',
+        },
+        {
+            href: `/${params.storeId}/categories`,
+            name: 'Categories',
         },
     ];
     return (
