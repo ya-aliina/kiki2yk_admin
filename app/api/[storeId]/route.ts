@@ -7,7 +7,7 @@ import {
 import { Store } from '@/types.db';
 import { checkAuth } from '@/lib/apiUtils/auth';
 import { ERRORS } from '@/lib/errors';
-import {paths} from "@/lib/firebasePaths";
+import { paths } from '@/lib/firebasePaths';
 
 interface StoreParams {
     params: {

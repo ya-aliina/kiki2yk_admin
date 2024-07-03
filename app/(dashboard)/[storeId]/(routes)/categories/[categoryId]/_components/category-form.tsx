@@ -21,13 +21,13 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
-import { Billboard } from '@/types.db';
+import { Category } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
 import ImageUpload from '@/components/image-upload';
 import { storage } from '@/lib/firebase';
 
-interface BillboardFormProps{
-    initialData: Billboard
+interface CategoryFormProps{
+    initialData: Category
 }
 
 const formSchema = z.object({
@@ -35,7 +35,7 @@ const formSchema = z.object({
     imageUrl: z.string().min(1),
 });
 
-const BillboardForm = ({ initialData }: BillboardFormProps) => {
+const CategoryForm = ({ initialData }: CategoryFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -47,13 +47,13 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     const params = useParams();
     const router = useRouter();
 
-    const title = initialData ? 'Edit Billboard' : 'Create Billboard';
-    const toastMessage = initialData ? 'Billboard Updated' : 'Billboard Created';
-    const action = initialData ? 'Save Changes' : 'Create Billboard';
+    const title = initialData ? 'Edit Category' : 'Create Category';
+    const toastMessage = initialData ? 'Category Updated' : 'Category Created';
+    const action = initialData ? 'Save Changes' : 'Create Category';
 
     const href = {
-        billboard: `/${params.storeId}/billboards/${params.billboardId}`,
-        billboardsList: `/${params.storeId}/billboards`,
+        category: `/${params.storeId}/categories/${params.categoryId}`,
+        categoriesList: `/${params.storeId}/categories`,
     };
 
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
@@ -61,11 +61,11 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
             setIsLoading(true);
 
             if (initialData) {
-                await axios.patch(`/api${href.billboard}`, data);
+                await axios.patch(`/api${href.category}`, data);
             } else {
-                await axios.post(`/api${href.billboardsList}`, data);
+                await axios.post(`/api${href.categoriesList}`, data);
             }
-            router.push(href.billboardsList);
+            router.push(href.categoriesList);
             router.refresh();
             toast.success(toastMessage);
         } catch (err) {
@@ -81,12 +81,12 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
             setIsLoading(true);
             const { imageUrl } = form.getValues();
             await deleteObject(ref(storage, imageUrl)).then(async () => {
-                await axios.delete(`/api${href.billboard}`);
+                await axios.delete(`/api${href.category}`);
             });
 
-            toast.success('Billboard Removed');
+            toast.success('Category Removed');
             router.refresh();
-            router.push(href.billboardsList);
+            router.push(href.categoriesList);
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -129,7 +129,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
                         name="imageUrl"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Billboard image</FormLabel>
+                                <FormLabel>Category image</FormLabel>
                                 <FormControl>
                                     <ImageUpload
                                         value={field.value ? [field.value] : []}
@@ -153,7 +153,7 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
                                     <FormControl>
                                         <Input
                                             disabled={isLoading}
-                                            placeholder="Your billboard name..."
+                                            placeholder="Your category name..."
                                             {...field}
                                         />
                                     </FormControl>
@@ -172,4 +172,4 @@ const BillboardForm = ({ initialData }: BillboardFormProps) => {
     );
 };
 
-export default BillboardForm;
+export default CategoryForm;

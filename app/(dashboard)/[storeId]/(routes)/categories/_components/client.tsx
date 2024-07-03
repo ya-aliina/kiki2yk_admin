@@ -6,10 +6,10 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { DataTable } from '@/components/ui/data-table';
-import { BillboardColumns, columns } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns';
+import { CategoryColumns, columns } from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/columns';
 
 interface CategoryClientProps {
-    data: BillboardColumns[],
+    data: CategoryColumns[],
 }
 
 const CategoryClient = ({ data }: CategoryClientProps) => {
@@ -24,7 +24,7 @@ const CategoryClient = ({ data }: CategoryClientProps) => {
                     description="Manage Categories for your store"
                 />
 
-                <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
+                <Button onClick={() => router.push(`/${params.storeId}/categories/create`)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add new
                 </Button>

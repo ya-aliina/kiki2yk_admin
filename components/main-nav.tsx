@@ -24,10 +24,6 @@ const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => 
             name: 'Settings',
         },
         {
-            href: `/${params.storeId}/billboards`,
-            name: 'Billboards',
-        },
-        {
             href: `/${params.storeId}/categories`,
             name: 'Categories',
         },

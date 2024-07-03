@@ -1,23 +1,22 @@
 import { getDocs } from '@firebase/firestore';
 import { format } from 'date-fns';
-
-import { paths } from '@/lib/firebasePaths';
-import { Billboard } from '@/types.db';
-import { BillboardColumns } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns';
 import CategoryClient from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/client';
+import { paths } from '@/lib/firebasePaths';
+import { Category } from '@/types.db';
+import { CategoryColumns } from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/columns';
 
-interface BillboardProps {
+interface CategoryProps {
     params: {
         storeId: string
     }
 }
 
-const CategoriesPage = async ({ params }: BillboardProps) => {
-    const billboardsData = (
-        await getDocs(paths.billboardsCollection(params.storeId))
-    ).docs.map((doc) => doc.data()) as Billboard[];
+const Categories = async ({ params }: CategoryProps) => {
+    const categoriesData = (
+        await getDocs(paths.categoriesCollection(params.storeId))
+    ).docs.map((doc) => doc.data()) as Category[];
 
-    const formattedBilboards: BillboardColumns[] = billboardsData.map((item) => ({
+    const formattedCategories: CategoryColumns[] = categoriesData.map((item) => ({
         id: item.id,
         label: item.label,
         imageUrl: item.imageUrl,
@@ -26,9 +25,9 @@ const CategoriesPage = async ({ params }: BillboardProps) => {
 
     return (
         <div className="flex-col">
-            <CategoryClient data={formattedBilboards} />
+            <CategoryClient data={formattedCategories} />
         </div>
     );
 };
 
-export default CategoriesPage;
+export default Categories;

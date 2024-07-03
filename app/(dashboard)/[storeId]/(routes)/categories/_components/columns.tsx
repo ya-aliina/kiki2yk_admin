@@ -2,18 +2,18 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
-import CellImage from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/cell-image';
+import CellImage from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/cell-image';
 import { Button } from '@/components/ui/button';
-import CellActions from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/cell-actions';
+import CellActions from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/cell-actions';
 
-export type BillboardColumns = {
+export type CategoryColumns = {
     id: string,
     label: string,
     imageUrl: string,
     createdAt: string
 }
 
-export const columns: ColumnDef<BillboardColumns>[] = [
+export const columns: ColumnDef<CategoryColumns>[] = [
     {
         accessorKey: 'imageUrl',
         header: 'Image',
@@ -32,7 +32,7 @@ export const columns: ColumnDef<BillboardColumns>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Billboard Name
+                    Category Name
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );

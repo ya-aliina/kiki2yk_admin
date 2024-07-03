@@ -10,17 +10,10 @@ export interface Store {
     updatedAt: Timestamp,
 }
 
-export interface Billboard {
+export interface Category {
     id: string,
     label: string,
     imageUrl: string,
-    createdAt: Timestamp,
-    updatedAt: Timestamp,
-}
-
-export interface Category {
-    id: string,
-    name: string,
     createdAt: Timestamp,
     updatedAt: Timestamp,
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BillboardColumns } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns';
+import { CategoryColumns } from '@/app/(dashboard)/[storeId]/(routes)/categories/_components/columns';
 
 interface CellImageProps{
     imageUrl: string
@@ -13,7 +13,7 @@ const CellImage = ({ imageUrl }: CellImageProps) => {
             <Image
                 fill
                 src={imageUrl}
-                alt="Billboard Image"
+                alt="Category Image"
                 className="object-cover"
             />
         </div>
