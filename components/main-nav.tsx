@@ -27,6 +27,10 @@ const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => 
             href: `/${params.storeId}/categories`,
             name: 'Categories',
         },
+        {
+            href: `/${params.storeId}/sizes`,
+            name: 'Sizes',
+        },
     ];
     return (
         <div className={cn('flex items-center space-x-4 lg:space-x-6 pl-6')}>
