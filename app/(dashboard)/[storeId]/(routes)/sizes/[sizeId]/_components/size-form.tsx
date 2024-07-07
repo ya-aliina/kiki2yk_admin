@@ -23,16 +23,14 @@ import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
 import { Size } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
-import ImageUpload from '@/components/image-upload';
-import { storage } from '@/lib/firebase';
 
 interface SizeFormProps{
     initialData: Size
 }
 
 const formSchema = z.object({
-    label: z.string().min(1),
-    imageUrl: z.string().min(1),
+    name: z.string().min(1),
+    value: z.string().min(1),
 });
 
 const SizeForm = ({ initialData }: SizeFormProps) => {
@@ -79,10 +77,6 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            const { imageUrl } = form.getValues();
-            await deleteObject(ref(storage, imageUrl)).then(async () => {
-                await axios.delete(`/api${href.size}`);
-            });
 
             toast.success('Size Removed');
             router.refresh();
@@ -124,29 +118,28 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                     className="w-full space-y-8"
                 >
 
-                    <FormField
-                        control={form.control}
-                        name="imageUrl"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Size image</FormLabel>
-                                <FormControl>
-                                    <ImageUpload
-                                        value={field.value ? [field.value] : []}
-                                        disabled={isLoading}
-                                        onChange={(url) => field.onChange(url)}
-                                        onRemove={() => field.onChange('')}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
                     <div className="grid grid-cols-3 gap-3">
                         <FormField
                             control={form.control}
-                            name="label"
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Abbreviation</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={isLoading}
+                                            placeholder="Your size name..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="value"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
@@ -164,7 +157,7 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                     </div>
 
                     <Button disabled={isLoading} type="submit" size="sm">
-                        { action }
+                        {action}
                     </Button>
                 </form>
             </Form>

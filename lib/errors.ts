@@ -11,6 +11,6 @@ export enum ERRORS {
     INTERNAL_SERVER_ERROR = 'Internal Server Error',
     MISSING_SIZE_ID = 'Size Id is missing',
     MISSING_SIZE_NAME = 'Size Name is missing',
-    MISSING_SIZE_IMAGE = 'Size Image is missing',
+    MISSING_SIZE_VALUE = 'Size Value is missing',
     SIZE_NOT_FOUND = 'Size not found',
 }

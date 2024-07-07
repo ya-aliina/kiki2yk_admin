@@ -25,14 +25,14 @@ export const POST = async (req: Request, { params } : SizeParams) => {
         // const userId = checkAuth();
 
         const body = await req.json();
-        const { label, imageUrl } = body;
+        const { name, value } = body;
 
-        if (!label) {
+        if (!name) {
             return new NextResponse(ERRORS.MISSING_SIZE_NAME, { status: 400 });
         }
 
-        if (!imageUrl) {
-            return new NextResponse(ERRORS.MISSING_SIZE_IMAGE, { status: 400 });
+        if (!value) {
+            return new NextResponse(ERRORS.MISSING_SIZE_VALUE, { status: 400 });
         }
 
         if (!params.storeId) {
@@ -44,8 +44,8 @@ export const POST = async (req: Request, { params } : SizeParams) => {
         // if (accessError) return accessError;
 
         const sizeData = {
-            label,
-            imageUrl,
+            name,
+            value,
             createdAt: serverTimestamp(),
         };
 
@@ -77,7 +77,7 @@ export const GET = async (req: Request, { params } : SizeParams) => {
 
         const sizesData = (
             await getDocs(
-                collection(doc(db, 'stores', params.storeId), 'sizes'),
+                paths.sizesCollection(params.storeId),
             )
         ).docs.map((docItem) => (docItem.data())) as Size[];
 

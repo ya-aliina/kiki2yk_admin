@@ -39,9 +39,9 @@ const CellActions = ({ data }: CellActionsProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await deleteObject(ref(storage, data.imageUrl)).then(async () => {
-                await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
-            });
+            // await deleteObject(ref(storage, data.imageUrl)).then(async () => {
+            //     await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+            // });
 
             location.reload();
             router.push(`/${params.storeId}/sizes`);
