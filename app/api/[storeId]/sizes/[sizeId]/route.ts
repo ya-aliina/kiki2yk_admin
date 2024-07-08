@@ -21,14 +21,14 @@ export const PATCH = async (req: Request, { params } : SizeParams) => {
         // const userId = checkAuth();
 
         const body = await req.json();
-        const { label, imageUrl } = body;
+        const { name, value } = body;
 
-        if (!label) {
+        if (!name) {
             return new NextResponse(ERRORS.MISSING_SIZE_NAME, { status: 400 });
         }
 
-        if (!imageUrl) {
-            return new NextResponse(ERRORS.MISSING_SIZE_IMAGE, { status: 400 });
+        if (!value) {
+            return new NextResponse(ERRORS.MISSING_SIZE_VALUE, { status: 400 });
         }
 
         if (!params.storeId) {
@@ -50,8 +50,8 @@ export const PATCH = async (req: Request, { params } : SizeParams) => {
         if (sizeRef.exists()) {
             await updateDoc(paths.size(params.storeId, params.sizeId), {
                 ...sizeRef.data(),
-                label,
-                imageUrl,
+                name,
+                value,
                 updatedAt: serverTimestamp(),
             });
         } else {
