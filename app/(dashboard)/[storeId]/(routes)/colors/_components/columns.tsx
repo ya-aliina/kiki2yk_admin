@@ -3,16 +3,16 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import CellActions from '@/app/(dashboard)/[storeId]/(routes)/sizes/_components/cell-actions';
+import CellActions from '@/app/(dashboard)/[storeId]/(routes)/colors/_components/cell-actions';
 
-export type SizeColumns = {
+export type ColorColumns = {
     id: string,
     name: string,
     value: string,
     createdAt: string
 }
 
-export const columns: ColumnDef<SizeColumns>[] = [
+export const columns: ColumnDef<ColorColumns>[] = [
     {
         accessorKey: 'name',
         header: ({ column }) => {

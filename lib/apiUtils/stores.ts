@@ -1,8 +1,8 @@
 import { doc, getDoc } from '@firebase/firestore';
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import {ERRORS} from "@/lib/errors";
-import {Store} from "@/types.db";
+import { ERRORS } from '@/lib/errors';
+import { Store } from '@/types.db';
 
 interface StoreParams {
     storeId: string,
@@ -18,7 +18,7 @@ interface StoreParams {
  */
 export const getStoreData = async ({ storeId }: StoreParams): Promise<Store> => {
     try {
-        const storeSnapshot = await getDoc( doc(db, 'stores', storeId));
+        const storeSnapshot = await getDoc(doc(db, 'stores', storeId));
 
         if (!storeSnapshot.exists()) {
             throw new Error(ERRORS.STORE_NOT_FOUND);

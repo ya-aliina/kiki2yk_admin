@@ -25,3 +25,12 @@ export interface Size {
     createdAt: Timestamp,
     updatedAt: Timestamp,
 }
+
+export interface Color {
+    id: string,
+    name: string,
+    value: string,
+    createdAt: Timestamp,
+    updatedAt: Timestamp,
+}
+

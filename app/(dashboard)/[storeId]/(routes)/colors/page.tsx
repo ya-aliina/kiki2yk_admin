@@ -1,22 +1,22 @@
 import { getDocs } from '@firebase/firestore';
 import { format } from 'date-fns';
-import SizeClient from '@/app/(dashboard)/[storeId]/(routes)/sizes/_components/client';
+import ColorClient from '@/app/(dashboard)/[storeId]/(routes)/colors/_components/client';
 import { paths } from '@/lib/firebasePaths';
-import { Size } from '@/types.db';
-import { SizeColumns } from '@/app/(dashboard)/[storeId]/(routes)/sizes/_components/columns';
+import { Color } from '@/types.db';
+import { ColorColumns } from '@/app/(dashboard)/[storeId]/(routes)/colors/_components/columns';
 
-interface SizeProps {
+interface ColorProps {
     params: {
         storeId: string
     }
 }
 
-const Sizes = async ({ params }: SizeProps) => {
-    const sizesData = (
-        await getDocs(paths.sizesCollection(params.storeId))
-    ).docs.map((doc) => doc.data()) as Size[];
+const Colors = async ({ params }: ColorProps) => {
+    const colorsData = (
+        await getDocs(paths.colorsCollection(params.storeId))
+    ).docs.map((doc) => doc.data()) as Color[];
 
-    const formattedSizes: SizeColumns[] = sizesData.map((item) => ({
+    const formattedColors: ColorColumns[] = colorsData.map((item) => ({
         id: item.id,
         name: item.name,
         value: item.value,
@@ -25,9 +25,9 @@ const Sizes = async ({ params }: SizeProps) => {
 
     return (
         <div className="flex-col">
-            <SizeClient data={formattedSizes} />
+            <ColorClient data={formattedColors} />
         </div>
     );
 };
 
-export default Sizes;
+export default Colors;

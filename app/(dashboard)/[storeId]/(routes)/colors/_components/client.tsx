@@ -6,13 +6,13 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { DataTable } from '@/components/ui/data-table';
-import { SizeColumns, columns } from '@/app/(dashboard)/[storeId]/(routes)/sizes/_components/columns';
+import { ColorColumns, columns } from '@/app/(dashboard)/[storeId]/(routes)/colors/_components/columns';
 
-interface SizeClientProps {
-    data: SizeColumns[],
+interface ColorClientProps {
+    data: ColorColumns[],
 }
 
-const SizeClient = ({ data }: SizeClientProps) => {
+const ColorClient = ({ data }: ColorClientProps) => {
     const params = useParams();
     const router = useRouter();
 
@@ -20,11 +20,11 @@ const SizeClient = ({ data }: SizeClientProps) => {
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Sizes (${data.length})`}
-                    description="Manage Sizes for your store"
+                    title={`Colors (${data.length})`}
+                    description="Manage Colors for your store"
                 />
 
-                <Button onClick={() => router.push(`/${params.storeId}/sizes/create`)}>
+                <Button onClick={() => router.push(`/${params.storeId}/colors/create`)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add new
                 </Button>
@@ -35,4 +35,4 @@ const SizeClient = ({ data }: SizeClientProps) => {
     );
 };
 
-export default SizeClient;
+export default ColorClient;

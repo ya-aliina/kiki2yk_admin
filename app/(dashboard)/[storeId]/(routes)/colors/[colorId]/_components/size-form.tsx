@@ -21,11 +21,11 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
-import { Size } from '@/types.db';
+import { Color } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
 
-interface SizeFormProps{
-    initialData: Size
+interface ColorFormProps{
+    initialData: Color
 }
 
 const formSchema = z.object({
@@ -33,7 +33,7 @@ const formSchema = z.object({
     value: z.string().min(1),
 });
 
-const SizeForm = ({ initialData }: SizeFormProps) => {
+const ColorForm = ({ initialData }: ColorFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -45,13 +45,13 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
     const params = useParams();
     const router = useRouter();
 
-    const title = initialData ? 'Edit Size' : 'Create Size';
-    const toastMessage = initialData ? 'Size Updated' : 'Size Created';
-    const action = initialData ? 'Save Changes' : 'Create Size';
+    const title = initialData ? 'Edit Color' : 'Create Color';
+    const toastMessage = initialData ? 'Color Updated' : 'Color Created';
+    const action = initialData ? 'Save Changes' : 'Create Color';
 
     const href = {
-        size: `/${params.storeId}/sizes/${params.sizeId}`,
-        sizesList: `/${params.storeId}/sizes`,
+        color: `/${params.storeId}/colors/${params.colorId}`,
+        colorsList: `/${params.storeId}/colors`,
     };
 
     const onSubmit = async (data : z.infer<typeof formSchema>) => {
@@ -59,11 +59,11 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
             setIsLoading(true);
 
             if (initialData) {
-                await axios.patch(`/api${href.size}`, data);
+                await axios.patch(`/api${href.color}`, data);
             } else {
-                await axios.post(`/api${href.sizesList}`, data);
+                await axios.post(`/api${href.colorsList}`, data);
             }
-            router.push(href.sizesList);
+            router.push(href.colorsList);
             router.refresh();
             toast.success(toastMessage);
         } catch (err) {
@@ -77,9 +77,9 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
-            toast.success('Size Removed');
-            router.push(href.sizesList);
+            await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
+            toast.success('Color Removed');
+            router.push(href.colorsList);
             router.refresh();
         } catch (err) {
             toast.error('Something went wrong');
@@ -103,7 +103,7 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                     <Button
                         disabled={isLoading}
                         variant="destructive"
-                        size="icon"
+                        color="icon"
                         onClick={() => { setOpen(true); }}
                     >
                         <Trash className="h-4 w-4" />
@@ -128,7 +128,7 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                                     <FormControl>
                                         <Input
                                             disabled={isLoading}
-                                            placeholder="Your size name..."
+                                            placeholder="Your color name..."
                                             {...field}
                                         />
                                     </FormControl>
@@ -146,7 +146,7 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                                     <FormControl>
                                         <Input
                                             disabled={isLoading}
-                                            placeholder="Your size name..."
+                                            placeholder="Your color name..."
                                             {...field}
                                         />
                                     </FormControl>
@@ -156,7 +156,7 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
                         />
                     </div>
 
-                    <Button disabled={isLoading} type="submit" size="sm">
+                    <Button disabled={isLoading} type="submit" color="sm">
                         {action}
                     </Button>
                 </form>
@@ -165,4 +165,4 @@ const SizeForm = ({ initialData }: SizeFormProps) => {
     );
 };
 
-export default SizeForm;
+export default ColorForm;

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
     ColumnDef,
@@ -10,8 +10,9 @@ import {
     getFilteredRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table';
 
+import { useState } from 'react';
 import {
     Table,
     TableBody,
@@ -19,10 +20,9 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import {Button} from "@/components/ui/button";
-import { Input } from "@/components/ui/input"
-import {useState} from "react";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -31,14 +31,14 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
-                                             columns,
-                                             data,
-                                             searchKey,
-                                         }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = useState<SortingState>([])
+    columns,
+    data,
+    searchKey,
+}: DataTableProps<TData, TValue>) {
+    const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
+        [],
+    );
     const table = useReactTable({
         data,
         columns,
@@ -51,18 +51,16 @@ export function DataTable<TData, TValue>({
         state: {
             sorting,
             columnFilters,
-        }
-    })
+        },
+    });
 
     return (
         <div>
             <div className="flex items-center py-4">
                 <Input
                     placeholder={`Search by ${searchKey}`}
-                    value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn(searchKey)?.setFilterValue(event.target.value)
-                    }
+                    value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
+                    onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
                     className="max-w-sm"
                 />
             </div>
@@ -78,10 +76,10 @@ export function DataTable<TData, TValue>({
                                                 ? null
                                                 : flexRender(
                                                     header.column.columnDef.header,
-                                                    header.getContext()
+                                                    header.getContext(),
                                                 )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -91,7 +89,7 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={row.getIsSelected() && 'selected'}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -129,5 +127,5 @@ export function DataTable<TData, TValue>({
                 </Button>
             </div>
         </div>
-    )
+    );
 }

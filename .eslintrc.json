@@ -5,6 +5,9 @@
   ],
   "rules": {
     "no-undef": "warn",
+    "no-unused-vars": "warn",
+    "no-restricted-globals": "warn",
+    "import/no-cycle": "warn",
     "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-one-expression-per-line": "off",

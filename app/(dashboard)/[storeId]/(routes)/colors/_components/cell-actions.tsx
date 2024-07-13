@@ -8,7 +8,7 @@ import {
 import toast from 'react-hot-toast';
 import { deleteObject, ref } from '@firebase/storage';
 import axios from 'axios';
-import { SizeColumns } from '@/app/(dashboard)/[storeId]/(routes)/sizes/_components/columns';
+import { ColorColumns } from '@/app/(dashboard)/[storeId]/(routes)/colors/_components/columns';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,7 +21,7 @@ import { storage } from '@/lib/firebase';
 import AlertModal from '@/components/modal/alert-modal';
 
 interface CellActionsProps {
-    data: SizeColumns
+    data: ColorColumns
 }
 
 const CellActions = ({ data }: CellActionsProps) => {
@@ -33,17 +33,17 @@ const CellActions = ({ data }: CellActionsProps) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id);
-        toast.success('Size is copied to clipboard');
+        toast.success('Color is copied to clipboard');
     };
 
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
 
             location.reload();
-            router.push(`/${params.storeId}/sizes`);
-            toast.success('Size Removed');
+            router.push(`/${params.storeId}/colors`);
+            toast.success('Color Removed');
         } catch (err) {
             toast.error('Something went wrong');
         } finally {
@@ -73,7 +73,7 @@ const CellActions = ({ data }: CellActionsProps) => {
                         Copy Id
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/colors/${data.id}`)}>
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                     </DropdownMenuItem>

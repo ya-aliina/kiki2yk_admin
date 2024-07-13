@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { ImagePlus, Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
-import {deleteObject, getDownloadURL, ref, uploadBytesResumable} from '@firebase/storage';
+import {
+    deleteObject, getDownloadURL, ref, uploadBytesResumable,
+} from '@firebase/storage';
 import Image from 'next/image';
 import { storage } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';

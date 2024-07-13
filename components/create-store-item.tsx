@@ -1,6 +1,6 @@
 'use client';
 
-import {PlusCircle} from "lucide-react";
+import { PlusCircle } from 'lucide-react';
 
 interface CreateStoreItemProps {
     onClick: () => void
