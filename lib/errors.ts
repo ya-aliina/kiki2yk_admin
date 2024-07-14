@@ -13,4 +13,8 @@ export enum ERRORS {
     MISSING_SIZE_NAME = 'Size Name is missing',
     MISSING_SIZE_VALUE = 'Size Value is missing',
     SIZE_NOT_FOUND = 'Size not found',
+    MISSING_COLOR_ID = 'Color Id is missing',
+    MISSING_COLOR_NAME = 'Color Name is missing',
+    MISSING_COLOR_VALUE = 'Color Value is missing',
+    COLOR_NOT_FOUND = 'Color not found',
 }

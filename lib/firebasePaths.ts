@@ -8,4 +8,6 @@ export const paths = {
     category: (storeId: string, categoryId: string) => doc(db, 'stores', storeId, 'categories', categoryId),
     sizesCollection: (storeId: string) => collection(db, 'stores', storeId, 'sizes'),
     size: (storeId: string, sizeId: string) => doc(db, 'stores', storeId, 'sizes', sizeId),
+    colorsCollection: (storeId: string) => collection(db, 'stores', storeId, 'colors'),
+    color: (storeId: string, colorId: string) => doc(db, 'stores', storeId, 'colors', colorId),
 };

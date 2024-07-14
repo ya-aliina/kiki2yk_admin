@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import Heading from '@/components/heading';
 import { Color } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
+import ColorPicker from '@/components/color-picker';
 
 interface ColorFormProps{
     initialData: Color
@@ -117,6 +118,7 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="w-full space-y-8"
                 >
+                    <ColorPicker />
 
                     <div className="grid grid-cols-3 gap-3">
                         <FormField
