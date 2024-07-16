@@ -24,6 +24,12 @@ import Heading from '@/components/heading';
 import { Color } from '@/types.db';
 import AlertModal from '@/components/modal/alert-modal';
 import ColorPicker from '@/components/color-picker';
+import { HexColorPicker } from "react-colorful";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 interface ColorFormProps{
     initialData: Color
@@ -88,6 +94,7 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
             setIsLoading(false);
         }
     };
+    const [color, setColor] = useState("#aabbcc");
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
@@ -117,8 +124,20 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="w-full space-y-8"
-                >
-                    <ColorPicker />
+                >                   
+                    
+                    <Popover>
+                        <PopoverTrigger className='relative'>
+                            <div
+                                className='w-10 h-10 rounded-full relative cursor-pointer'
+                                style={{ 'background': color }}
+                            >
+                            </div>
+                        </PopoverTrigger>
+                        <PopoverContent className='m-0 p-0 absolute '>
+                            <HexColorPicker color={color} onChange={setColor} />
+                        </PopoverContent>
+                    </Popover>
 
                     <div className="grid grid-cols-3 gap-3">
                         <FormField

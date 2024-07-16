@@ -16,23 +16,27 @@ import { GithubPlacement } from '@uiw/react-color-github';
 
 function ColorPicker() {
     const [hsva, setHsva] = useState({ h: 0, s: 25.71, v: 82.35, a: 0.32 });
-    const hex = hsvaToHex(hsva)
-    const [isVisible, setIsVisible] = useState(false)
+    const hex = hsvaToHex(hsva);
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleColorPicker = () => {
+        setIsVisible(!isVisible);
+    }
     return (
         <>
             <div
                 className='w-10 h-10 rounded-full relative cursor-pointer' 
                 style={{ background: hex }}
-                onClick={() => setIsVisible(!isVisible)}                
+                onClick={toggleColorPicker}                
             >
             </div>
 
             <div
                 className={cn(
-                    'absolute !mt-0',
+                    'absolute !mt-0 transition-all duration-300 ease-in-out',
                     isVisible
-                        ? 'block'
-                        : 'hidden',
+                        ? 'block opacity-100 scale-100'
+                        : 'opacity-0 scale-95',
+
                 )}
             >
                 <Chrome
@@ -48,5 +52,3 @@ function ColorPicker() {
     );
 }
 export default ColorPicker;
-
-// style={{ position: 'absolute', 'marginTop': '0px' }}
