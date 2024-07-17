@@ -36,13 +36,14 @@ interface ColorFormProps{
 }
 
 const formSchema = z.object({
-    name: z.string().min(1),
     value: z.string().min(1),
+    name: z.string().min(1),
 });
 
 const ColorForm = ({ initialData }: ColorFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [color, setColor] = useState(initialData.value || "#aabbcc");
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -94,7 +95,6 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
             setIsLoading(false);
         }
     };
-    const [color, setColor] = useState("#aabbcc");
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
@@ -125,42 +125,36 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="w-full space-y-8"
                 >                   
-                    
-                    <Popover>
-                        <PopoverTrigger className='relative'>
-                            <div
-                                className='w-10 h-10 rounded-full relative cursor-pointer'
-                                style={{ 'background': color }}
-                            >
-                            </div>
-                        </PopoverTrigger>
-                        <PopoverContent className='m-0 p-0 absolute '>
-                            <HexColorPicker color={color} onChange={setColor} />
-                        </PopoverContent>
-                    </Popover>
-
                     <div className="grid grid-cols-3 gap-3">
+                        
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="value"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Abbreviation</FormLabel>
+                                    <FormLabel>Color</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            disabled={isLoading}
-                                            placeholder="Your color name..."
-                                            {...field}
-                                        />
+                                        <Popover>
+                                            <PopoverTrigger className='relative'>
+                                                <div
+                                                    className='w-10 h-10 rounded-full relative cursor-pointer'
+                                                    style={{ 'background': color }}
+                                                >
+                                                </div>
+                                            </PopoverTrigger>
+                                            <PopoverContent className='m-0 p-0 absolute '>
+                                                <HexColorPicker color={color} onChange={setColor} />
+                                            </PopoverContent>
+                                        </Popover>
+                                        
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-
                         <FormField
                             control={form.control}
-                            name="value"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Name</FormLabel>
@@ -168,6 +162,7 @@ const ColorForm = ({ initialData }: ColorFormProps) => {
                                         <Input
                                             disabled={isLoading}
                                             placeholder="Your color name..."
+                                            
                                             {...field}
                                         />
                                     </FormControl>
